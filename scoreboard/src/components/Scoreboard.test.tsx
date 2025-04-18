@@ -1,6 +1,6 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, afterEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
-import { render, screen, within } from "@testing-library/react";
+import { cleanup, getByText, render, screen, within } from "@testing-library/react";
 
 import Scoreboard from "./Scoreboard";
 import { Match } from "./Scoreboard";
@@ -19,7 +19,11 @@ describe("Greeting", () => {
     }
   ];
 
-  const {rerender} = render(<Scoreboard scores={matches} />);
+  const {rerender, container} = render(<Scoreboard scores={matches} />);
+
+  // afterEach(() => {
+  //   cleanup();
+  // });
 
   it("should render title Scoreboard", () => {
     const heading = screen.getByText("Scoreboard");
@@ -77,13 +81,75 @@ describe("Greeting", () => {
     const matches2: Match[] = [];
     rerender(<Scoreboard scores={matches2} />);
 
-    expect(screen.getByText(/^Mexico 0/)).not.toBeInTheDocument();
-    expect(screen.getByText(/^Canada 0/)).not.toBeInTheDocument();
+    //TODO
+    expect(screen.getByTestId("score")).not.toBeInTheDocument();
   });
 
   it(`Get a summary of matches in progress ordered by their total score. 
-    The matches with thesame total score will be returned ordered by the 
+    The matches with the same total score will be returned ordered by the 
     most recently started match in the scoreboard.`, ()=>{
+    const matches = [
+      {
+        homeTeam: {
+          name: "Mexico",
+          score: 0
+        },
+        awayTeam: {
+          name: "Canada",
+          score: 5
+        }
+      },
+      {
+        homeTeam: {
+          name: "Spain",
+          score: 10
+        },
+        awayTeam: {
+          name: "Brazil",
+          score: 2
+        }
+      },
+      {
+        homeTeam: {
+          name: "Germany",
+          score: 2
+        },
+        awayTeam: {
+          name: "France",
+          score: 2
+        }
+      },
+      {
+        homeTeam: {
+          name: "Uruguay",
+          score: 6
+        },
+        awayTeam: {
+          name: "Italy",
+          score: 6
+        }
+      },
+      {
+        homeTeam: {
+          name: "Argentina",
+          score: 3
+        },
+        awayTeam: {
+          name: "Australia",
+          score: 1
+        }
+      }
+    ];
+
+    rerender(<Scoreboard scores={matches} />);
+
+    const scores = screen.getAllByTestId("score");
+
+    expect(getByText(scores[0], /^Uruguay/)).toBeInTheDocument();
+    expect(getByText(scores[1], /^Spain/)).toBeInTheDocument();
+    expect(getByText(scores[2], /^Mexico/)).toBeInTheDocument();
+    expect(getByText(scores[3], /^Argentina/)).toBeInTheDocument();
+    expect(getByText(scores[4], /^Germany/)).toBeInTheDocument();
   });
 
 });
