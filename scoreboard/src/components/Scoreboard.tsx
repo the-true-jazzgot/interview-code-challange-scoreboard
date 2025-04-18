@@ -1,3 +1,5 @@
 export default function Scoreboard(){
-    return <></>
+    return <>
+        <h3>Scoreboard</h3>
+    </>
 }
