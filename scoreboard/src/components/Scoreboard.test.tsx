@@ -6,40 +6,52 @@ import Scoreboard from "./Scoreboard";
 import { Match } from "./Scoreboard";
 
 describe("Greeting", () => {
-  const matches: Match[] = [
-    {
-      homeTeam: {
-        name: "Mexico",
-        score: undefined
-      },
-      awayTeam: {
-        name: "Canada",
-        score: undefined
-      }
-    }
-  ];
+  
 
-  const {rerender, container} = render(<Scoreboard scores={matches} />);
-
-  // afterEach(() => {
-  //   cleanup();
-  // });
+  afterEach(cleanup);
 
   it("should render title Scoreboard", () => {
-    const heading = screen.getByText("Scoreboard");
+    const matches: Match[] = [
+      {
+        homeTeam: {
+          name: "Mexico",
+          score: undefined
+        },
+        awayTeam: {
+          name: "Canada",
+          score: undefined
+        }
+      }
+    ];
+  
+    const {getByText} = render(<Scoreboard matches={matches} />);
+
+    const heading = getByText("Scoreboard");
     expect(heading).toBeInTheDocument();
   });
 
   it("Start a new match, assuming initial score 0 – 0 and adding it the scoreboard.", ()=>{
-    expect(screen.getByText(/^Mexico 0/)).toBeInTheDocument();
-    expect(screen.getByText(/^Canada 0/)).toBeInTheDocument();
+    const matches: Match[] = [
+      {
+        homeTeam: {
+          name: "Mexico",
+          score: undefined
+        },
+        awayTeam: {
+          name: "Canada",
+          score: undefined
+        }
+      }
+    ];
+  
+    const {getByText} = render(<Scoreboard matches={matches} />);
+
+    expect(getByText(/^Mexico 0/)).toBeInTheDocument();
+    expect(getByText(/^Canada 0/)).toBeInTheDocument();
   });
 
   it("Update score. This should receive a pair of absolute scores: home team score and away team score.", ()=>{
-    expect(screen.getByText(/^Mexico 0/)).toBeInTheDocument();
-    expect(screen.getByText(/^Canada 0/)).toBeInTheDocument();
-
-    const matches2 = [
+    const matches = [
       {
         homeTeam: {
           name: "Mexico",
@@ -47,42 +59,21 @@ describe("Greeting", () => {
         },
         awayTeam: {
           name: "Canada",
-          score: 0
+          score: 3
         }
       }
     ];
 
-    rerender(<Scoreboard scores={matches2} />);
-    expect(screen.getByText(/^Mexico 1/)).toBeInTheDocument();
-    expect(screen.getByText(/^Canada 0/)).toBeInTheDocument();
-
-    const matches3 = [
-      {
-        homeTeam: {
-          name: "Mexico",
-          score: 0
-        },
-        awayTeam: {
-          name: "Canada",
-          score: 1
-        }
-      }
-    ];
-
-    rerender(<Scoreboard scores={matches3} />);
-    expect(screen.getByText(/^Mexico 0/)).toBeInTheDocument();
-    expect(screen.getByText(/^Canada 1/)).toBeInTheDocument();
+    const {getByText} = render(<Scoreboard matches={matches} />);
+    expect(getByText(/^Mexico\s+1/i)).toBeInTheDocument();
+    expect(getByText(/^Canada\s+3/)).toBeInTheDocument();
   });
 
   it("Finish match currently in progress. This removes a match from the scoreboard.", ()=>{
-    expect(screen.getByText(/^Mexico/)).toBeInTheDocument();
-    expect(screen.getByText(/^Canada/)).toBeInTheDocument();
+    const matches: Match[] = [];
+    const {queryByTestId} = render(<Scoreboard matches={matches} />);
 
-    const matches2: Match[] = [];
-    rerender(<Scoreboard scores={matches2} />);
-
-    //TODO
-    expect(screen.getByTestId("score")).not.toBeInTheDocument();
+    expect(queryByTestId('score')).toBeFalsy();
   });
 
   it(`Get a summary of matches in progress ordered by their total score. 
@@ -141,9 +132,9 @@ describe("Greeting", () => {
       }
     ];
 
-    rerender(<Scoreboard scores={matches} />);
+    const {getAllByTestId} = render(<Scoreboard matches={matches} />);
 
-    const scores = screen.getAllByTestId("score");
+    const scores = getAllByTestId("score");
 
     expect(getByText(scores[0], /^Uruguay/)).toBeInTheDocument();
     expect(getByText(scores[1], /^Spain/)).toBeInTheDocument();
