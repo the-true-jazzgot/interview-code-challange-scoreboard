@@ -11,10 +11,8 @@
 2. go to `scoreboard`
 3. run `npm test`
 
-## My assumptions:
-I created simple, reusable React component which receives all scoreboard data in properties passed to it. Created custom interface to make sure that data passed is always properly typed so that component works as intended. 
-
-# Potential improvements:
- - Possibility of receiving scores updates separately by match UID or teams names - depending on an implementation this could simplify usage of component by not requiring mutation of props passed to it every time any scores changes - in this scenario component would have to be much more complicated (for receiving scores we could use ie. RxJS stream or some state management library) and could potentially require additional data (ie. match UID)
- 
- - use reducer to manage scores table to simplify how it interacts with external code
+## My implementation:
+- I created simple library for managing and displaying football scoreboards - it consists of `scoreboard.lib.ts` file which contains whole logic written in TypeScript and follows reducer design pattern, it's library/framework agnostic and created with Reacts useReducer hook in mind. 
+- Additionally there is Scoreboard functional component written in React for simple implementation with useReducer hook. 
+- All tests are written with React
+- There are two examples provided - one in React and one in Vanilla JS (compiled from TypeScript)

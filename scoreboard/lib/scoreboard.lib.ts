@@ -74,26 +74,11 @@ export default function scoreboard(state:Match[], action:ScoreboardActions):Matc
             }
             return match
         });
-        console.log(sortMatches(matches));
         return sortMatches(matches);
       }
       case 'finish_match': {
-        const matches:Match[] = state.map(match => {
-            if((match.awayTeam.name == action.payload.awayTeam.name) && (match.homeTeam.name == action.payload.homeTeam.name)) {
-                return {
-                    homeTeam: {
-                        name: match.homeTeam.name,
-                        score: match.homeTeam.score
-                    },
-                    awayTeam: {
-                        name: match.awayTeam.name,
-                        score: match.awayTeam.score
-                    },
-                    isFinished: true,
-                    id: match.id
-                }
-            }
-            return match
+        const matches:Match[] = state.filter(match => {
+            return (match.awayTeam.name !== action.payload.awayTeam.name) && (match.homeTeam.name !== action.payload.homeTeam.name)
         });
         return sortMatches(matches);
       }
