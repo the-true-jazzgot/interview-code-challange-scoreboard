@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup, getByText, render } from "@testing-library/react";
 
 import Scoreboard from "./Scoreboard";
-import { Match } from "../reducers/ScoresReducer";
+import { Match } from "./ScoresReducer";
 
 describe("Greeting", () => {
   afterEach(cleanup);

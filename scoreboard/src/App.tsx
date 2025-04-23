@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react';
 import './App.css'
-import scoresReducer, { Match } from './reducers/ScoresReducer';
-import Scoreboard from './components/Scoreboard';
+import scoresReducer, { Match } from '../lib/ScoresReducer';
+import Scoreboard from '../lib/Scoreboard';
 
 function App() {
   const [scores, dispatch] = useReducer(scoresReducer, []);

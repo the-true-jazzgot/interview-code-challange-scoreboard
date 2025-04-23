@@ -2,9 +2,9 @@ import { it, expect, describe, afterEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import { cleanup, fireEvent, getByText, render } from "@testing-library/react";
 
-import Scoreboard from "./components/Scoreboard";
+import Scoreboard from "./Scoreboard";
 import { useReducer } from "react";
-import scoresReducer from "./reducers/ScoresReducer";
+import scoresReducer from "./ScoresReducer";
 
 describe("Greeting", () => {
   afterEach(cleanup);
@@ -307,7 +307,7 @@ describe("Greeting", () => {
 
     expect(getByText(scores[0], /^Uruguay/)).toBeInTheDocument();
     expect(getByText(scores[1], /^Spain/)).toBeInTheDocument();
-    expect(getByText(scores[0], /^Mexico/)).toBeInTheDocument();
+    expect(getByText(scores[2], /^Mexico/)).toBeInTheDocument();
     expect(getByText(scores[3], /^Argentina/)).toBeInTheDocument();
     expect(getByText(scores[4], /^Germany/)).toBeInTheDocument();
 
