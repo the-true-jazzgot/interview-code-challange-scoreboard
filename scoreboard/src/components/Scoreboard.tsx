@@ -1,17 +1,5 @@
-import { useState } from "react";
+import { Match } from '../reducers/ScoresReducer';
 import styles from './Scoreboard.module.css';
-
-export interface Match {
-    homeTeam: {
-        name: string,
-        score: number | undefined
-    }
-    awayTeam: {
-        name: string,
-        score: number | undefined
-    },
-    isFinished?: boolean
-}
 
 export interface ScoreboardProps {
     matches: Match[],
@@ -19,26 +7,9 @@ export interface ScoreboardProps {
 }
 
 export default function Scoreboard({matches, title = "Scoreboard"}:ScoreboardProps) {
-    const [scores, ] = useState<Match[]>(compareMatches(matches));
-
-    function compareMatches(matches:Match[]):Match[] {
-        const returnValue = matches.map((match, index) => ({
-            matchIndex: index,
-            score: (match.awayTeam.score ?? 0) + (match.homeTeam.score ?? 0),
-            match
-        }));
-        returnValue.sort((a,b)=>{
-            if(a.score === b.score){
-                return  b.matchIndex - a.matchIndex
-            }
-            return b.score - a.score
-        });
-        return returnValue.map(item => item.match);
-    }
-
     return <section className={styles.section}>
         <h3>{title}</h3>
-        {scores.map(match => 
+        {matches.map(match => 
             !match.isFinished && 
             <div 
                 key={`${match.homeTeam.name}-${match.awayTeam.name}`} 

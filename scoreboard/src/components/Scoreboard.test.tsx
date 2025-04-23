@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup, getByText, render } from "@testing-library/react";
 
 import Scoreboard from "./Scoreboard";
-import { Match } from "./Scoreboard";
+import { Match } from "../reducers/ScoresReducer";
 
 describe("Greeting", () => {
   afterEach(cleanup);
@@ -153,11 +153,11 @@ describe("Greeting", () => {
 
     const scores = getAllByTestId("score");
 
-    expect(getByText(scores[0], /^Uruguay/)).toBeInTheDocument();
+    expect(getByText(scores[0], /^Mexico/)).toBeInTheDocument();
     expect(getByText(scores[1], /^Spain/)).toBeInTheDocument();
-    expect(getByText(scores[2], /^Mexico/)).toBeInTheDocument();
-    expect(getByText(scores[3], /^Argentina/)).toBeInTheDocument();
-    expect(getByText(scores[4], /^Germany/)).toBeInTheDocument();
+    expect(getByText(scores[2], /^Germany/)).toBeInTheDocument();
+    expect(getByText(scores[3], /^Uruguay/)).toBeInTheDocument();
+    expect(getByText(scores[4], /^Argentina/)).toBeInTheDocument();
   });
 
 });

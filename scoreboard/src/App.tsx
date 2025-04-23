@@ -1,7 +1,14 @@
+import { useReducer, useState } from 'react';
 import './App.css'
-import Scoreboard, { Match } from './components/Scoreboard'
+import scoresReducer, { Match } from './reducers/ScoresReducer';
+import Scoreboard from './components/Scoreboard';
 
-const matches: Match[] = [
+function App() {
+  const [scores, dispatch] = useReducer(scoresReducer, []);
+  const [lastIndexAdd, setLastIndexAdd] = useState(0);
+  const [lastIndexUpdate, setLastIndexUpdate] = useState(0);
+
+  const matches: Match[] = [
     {
       homeTeam: {
         name: "Mexico",
@@ -54,8 +61,41 @@ const matches: Match[] = [
     }
   ];
 
-function App() {
-  return <Scoreboard matches={matches} />
+  function addMatch(){
+    dispatch({
+      type: "add_new_match",
+      payload: matches[lastIndexAdd]
+    });
+    console.log(matches[lastIndexAdd]);
+    setLastIndexAdd(prev => prev+1);
+  }
+
+  function removeMatch(){
+    //removes Spain - Brasil match
+    dispatch({
+      type: "finish_match",
+      payload: {
+        ...matches[0],
+        isFinished: true
+      }
+    });
+  }
+
+  function updateScore(){
+    dispatch({
+      type: "update_score",
+      payload: matches[lastIndexUpdate]
+    });
+    console.log(matches[lastIndexUpdate]);
+    setLastIndexUpdate(prev=>prev+1);
+  }
+  
+  return <>
+    <button onClick={() => addMatch()}>Add match</button>
+    <button onClick={() => removeMatch()}>Remove match</button>
+    <button onClick={() => updateScore()}>Update score</button>
+    <Scoreboard matches={scores} />
+  </>
 }
 
 export default App
