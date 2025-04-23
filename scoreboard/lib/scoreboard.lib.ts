@@ -7,6 +7,7 @@ export interface Match {
         name: string,
         score?: number
     },
+    id?: number,
     isFinished?: boolean
 }
   
@@ -25,22 +26,20 @@ interface FinishMatchAction {
     payload: Match
 }
 
+type ScoreboardActions = AddNewMatchAction | UpdateScoreAction | FinishMatchAction;
+
 function sortMatches(matches:Match[]):Match[] {
-    const returnValue = matches.map((match, index) => ({
-        matchIndex: index,
-        score: (match.awayTeam.score ?? 0) + (match.homeTeam.score ?? 0),
-        match
-    }));
-    returnValue.sort((a,b)=>{
-        if(a.score === b.score){
-            return  b.matchIndex - a.matchIndex
+    return matches.sort((match1,match2)=>{
+        if(((match1.awayTeam.score ?? 0) + (match1.homeTeam.score ?? 0)) === ((match2.awayTeam.score ?? 0) + (match2.homeTeam.score ?? 0))){
+            return (match2.id ?? 0) - (match1.id ?? 0)
         }
-        return b.score - a.score
+        return ((match2.awayTeam.score ?? 0) + (match2.homeTeam.score ?? 0)) - ((match1.awayTeam.score ?? 0) + (match1.homeTeam.score ?? 0))
     });
-    return returnValue.map(item => item.match);
 }
 
-export default function scoresReducer(state:Match[], action:AddNewMatchAction | UpdateScoreAction | FinishMatchAction):Match[] {
+let id = 0;
+
+export default function scoresReducer(state:Match[], action:ScoreboardActions):Match[] {
     switch (action.type) {
       case 'add_new_match': {
         const matches:Match[] = [
@@ -51,9 +50,11 @@ export default function scoresReducer(state:Match[], action:AddNewMatchAction | 
                 },
                 awayTeam: {
                     name: action.payload.awayTeam.name,
-                }
+                },
+                id: id
             }
         ];
+        id = id + 1;
         return sortMatches(matches);
       }
       case 'update_score': {
@@ -67,11 +68,13 @@ export default function scoresReducer(state:Match[], action:AddNewMatchAction | 
                     awayTeam: {
                         name: match.awayTeam.name,
                         score: action.payload.awayTeam.score
-                    }
+                    },
+                    id: match.id
                 }
             }
             return match
         });
+        console.log(sortMatches(matches));
         return sortMatches(matches);
       }
       case 'finish_match': {
@@ -86,7 +89,8 @@ export default function scoresReducer(state:Match[], action:AddNewMatchAction | 
                         name: match.awayTeam.name,
                         score: match.awayTeam.score
                     },
-                    isFinished: true
+                    isFinished: true,
+                    id: match.id
                 }
             }
             return match

@@ -1,4 +1,4 @@
-import { Match } from './ScoresReducer';
+import { Match } from './scoreboard.lib';
 import styles from './Scoreboard.module.css';
 
 export interface ScoreboardProps {

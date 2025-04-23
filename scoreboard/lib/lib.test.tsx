@@ -4,7 +4,7 @@ import { cleanup, fireEvent, getByText, render } from "@testing-library/react";
 
 import Scoreboard from "./Scoreboard";
 import { useReducer } from "react";
-import scoresReducer from "./ScoresReducer";
+import scoresReducer from "./scoreboard.lib";
 
 describe("Greeting", () => {
   afterEach(cleanup);

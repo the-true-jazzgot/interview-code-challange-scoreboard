@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "lib/Scoreboard.tsx", "lib/Scoreboard.test.tsx", "lib/lib.test.tsx", "lib/ScoresReducer.ts"]
+  "include": ["src", "lib/Scoreboard.tsx", "lib/Scoreboard.test.tsx", "lib/lib.test.tsx", "lib/scoreboard.lib.ts"]
 }
