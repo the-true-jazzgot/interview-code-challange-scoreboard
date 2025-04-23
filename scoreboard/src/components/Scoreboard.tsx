@@ -1,23 +1,43 @@
+import { useState } from "react"
+
 export interface Match {
     homeTeam: {
-        name: String,
-        score: Number | undefined
+        name: string,
+        score: number | undefined
     }
     awayTeam: {
-        name: String,
-        score: Number | undefined
-    }
+        name: string,
+        score: number | undefined
+    },
+    isFinished?: boolean
 }
 
 export interface ScoreboardProps {
-    scores: Match[]
+    matches: Match[]
 }
 
-export default function Scoreboard({scores}:ScoreboardProps) {
+export default function Scoreboard({matches}:ScoreboardProps) {
+    const [scores, ] = useState<Match[]>(compareMatches(matches));
+
+    function compareMatches(matches:Match[]):Match[] {
+        const returnValue = matches.map((match, index) => ({
+            matchIndex: index,
+            score: (match.awayTeam.score ?? 0) + (match.homeTeam.score ?? 0),
+            match
+        }));
+        returnValue.sort((a,b)=>{
+            if(a.score === b.score){
+                return  b.matchIndex - a.matchIndex
+            }
+            return b.score - a.score
+        });
+        return returnValue.map(item => item.match);
+    }
+
     return <section>
         <h3>Scoreboard</h3>
         {scores.map(match => 
-            <div key={`${match.homeTeam.name}-${match.awayTeam.name}`}>
+            !match.isFinished && <div key={`${match.homeTeam.name}-${match.awayTeam.name}`} data-testid="score">
                 <span>{`${match.homeTeam.name} ${match.homeTeam.score?.toString() ?? "0"}`}</span>
                 <span>{`${match.awayTeam.name} ${match.awayTeam.score?.toString() ?? "0"}`}</span>
             </div>
