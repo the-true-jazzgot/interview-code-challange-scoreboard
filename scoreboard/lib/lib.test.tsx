@@ -4,14 +4,14 @@ import { cleanup, fireEvent, getByText, render } from "@testing-library/react";
 
 import Scoreboard from "./Scoreboard";
 import { useReducer } from "react";
-import scoresReducer from "./scoreboard.lib";
+import scoreboard from "./scoreboard.lib";
 
 describe("Greeting", () => {
   afterEach(cleanup);
 
   it("Start a new match, assuming initial score 0 – 0 and adding it the scoreboard.", ()=>{
     function App() {
-        const [scores, dispatch] = useReducer(scoresReducer, []);
+        const [scores, dispatch] = useReducer(scoreboard, []);
       
         function addMatch(){
           dispatch({
@@ -41,7 +41,7 @@ describe("Greeting", () => {
 
   it("Update score. This should receive a pair of absolute scores: home team score and away team score.", ()=>{
     function App() {
-        const [scores, dispatch] = useReducer(scoresReducer, [{
+        const [scores, dispatch] = useReducer(scoreboard, [{
             homeTeam: {
               name: "Mexico"
             },
@@ -82,7 +82,7 @@ describe("Greeting", () => {
 
   it("Finishes match currently in progress by marking it as finished. This removes a match from the scoreboard.", ()=>{
     function App() {
-        const [scores, dispatch] = useReducer(scoresReducer, [{
+        const [scores, dispatch] = useReducer(scoreboard, [{
             homeTeam: {
               name: "Mexico"
             },
@@ -122,7 +122,7 @@ describe("Greeting", () => {
     The matches with the same total score will be returned ordered by the 
     most recently started match in the scoreboard.`, ()=>{
     function App() {
-        const [scores, dispatch] = useReducer(scoresReducer, []);
+        const [scores, dispatch] = useReducer(scoreboard, []);
       
         function addMatch1(){
           dispatch({
@@ -311,10 +311,86 @@ describe("Greeting", () => {
     expect(getByText(scores[3], /^Argentina/)).toBeInTheDocument();
     expect(getByText(scores[4], /^Germany/)).toBeInTheDocument();
 
-    });
+  });
+
+  it("Should not accept negative values for scores", async ()=>{
+    function App() {
+      const [scores, dispatch] = useReducer(scoreboard, [{
+          homeTeam: {
+            name: "Mexico"
+          },
+          awayTeam: {
+            name: "Canada"
+          }
+        }]);
+    
+      function updateScore(){
+        dispatch({
+          type: "update_score",
+          payload: {
+              homeTeam: {
+                name: "Mexico",
+                score: -1
+              },
+              awayTeam: {
+                name: "Canada",
+                score: 0
+              }
+            }
+        });
+      }
+      
+      return <>
+        <button onClick={() => updateScore()}>Update score</button>
+        <Scoreboard matches={scores} />
+      </>
+    };
+
+    const {getByText} = render(<App />);
+
+    const button = getByText("Update score");
+
+    expect(() => fireEvent.click(button)).toThrow("Scores cannot have negative values");
+  });
+
+  it("Should only accept whole number values for scores", async ()=>{
+    function App() {
+      const [scores, dispatch] = useReducer(scoreboard, [{
+          homeTeam: {
+            name: "Mexico"
+          },
+          awayTeam: {
+            name: "Canada"
+          }
+        }]);
+    
+      function updateScore(){
+        dispatch({
+          type: "update_score",
+          payload: {
+              homeTeam: {
+                name: "Mexico",
+                score: 3.547
+              },
+              awayTeam: {
+                name: "Canada",
+                score: 0
+              }
+            }
+        });
+      }
+      
+      return <>
+        <button onClick={() => updateScore()}>Update score</button>
+        <Scoreboard matches={scores} />
+      </>
+    };
+
+    const {getByText} = render(<App />);
+
+    const button = getByText("Update score");
+
+    expect(() => fireEvent.click(button)).toThrow("Scores have to be whole number values");
+  });
+
 });
-
-
-
-
-
