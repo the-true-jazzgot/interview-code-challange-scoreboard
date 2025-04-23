@@ -7,7 +7,7 @@ export interface ScoreboardProps {
 }
 
 export default function Scoreboard({matches, title = "Scoreboard"}:ScoreboardProps) {
-    return <section className={styles.section}>
+    return <section className={styles.scoreboard}>
         <h3>{title}</h3>
         {matches.map(match => 
             !match.isFinished && 

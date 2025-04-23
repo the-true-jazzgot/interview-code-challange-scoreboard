@@ -1,10 +1,10 @@
-import { useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import './App.css'
-import scoresReducer, { Match } from '../lib/scoreboard.lib';
+import scoreboard from '../lib/scoreboard.lib';
 import Scoreboard from '../lib/Scoreboard';
 
     function App() {
-        const [scores, dispatch] = useReducer(scoresReducer, []);
+        const [scores, dispatch] = useReducer(scoreboard, []);
       
         function addMatch1(){
           dispatch({
@@ -157,17 +157,19 @@ import Scoreboard from '../lib/Scoreboard';
         }
         
         return <>
-          <button onClick={() => addMatch1()}>Add match 1</button>
-          <button onClick={() => addMatch2()}>Add match 2</button>
-          <button onClick={() => addMatch3()}>Add match 3</button>
-          <button onClick={() => addMatch4()}>Add match 4</button>
-          <button onClick={() => addMatch5()}>Add match 5</button>
-          <button onClick={() => updateScore1()}>Update score 1</button>
-          <button onClick={() => updateScore2()}>Update score 2</button>
-          <button onClick={() => updateScore3()}>Update score 3</button>
-          <button onClick={() => updateScore4()}>Update score 4</button>
-          <button onClick={() => updateScore5()}>Update score 5</button>
-          <Scoreboard matches={scores} />
+            <div>
+                <button onClick={() => addMatch1()}>Add match 1</button>
+                <button onClick={() => addMatch2()}>Add match 2</button>
+                <button onClick={() => addMatch3()}>Add match 3</button>
+                <button onClick={() => addMatch4()}>Add match 4</button>
+                <button onClick={() => addMatch5()}>Add match 5</button>
+                <button onClick={() => updateScore1()}>Update score 1</button>
+                <button onClick={() => updateScore2()}>Update score 2</button>
+                <button onClick={() => updateScore3()}>Update score 3</button>
+                <button onClick={() => updateScore4()}>Update score 4</button>
+                <button onClick={() => updateScore5()}>Update score 5</button>
+            </div>
+            <Scoreboard matches={scores} />
         </>
     }
 

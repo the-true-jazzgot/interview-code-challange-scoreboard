@@ -1,3 +1,18 @@
 * {
     box-sizing: border-box;
 }
+
+#root > div {
+    width: 200px;
+    float: left;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+div button {
+    max-width: 300px;
+    width: auto;
+    padding: 10px;
+    float: left;
+}

@@ -1,22 +1,22 @@
-.section {
-    /* for testing */
+.scoreboard {
     max-width: 400px;
     width: 100%;
+    float: left;
 }
 
-h3 {
+.scoreboard h3 {
     text-align: center;
 }
 
-div {
+.scoreboard div {
     display: flex;
 }
 
-div span {
+.scoreboard div span {
     padding: 5px 10px;
     flex:1;
 }
 
-div span:first-child {
+.scoreboard div span:first-child {
     text-align: right;
 }
