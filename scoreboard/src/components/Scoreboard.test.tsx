@@ -1,13 +1,11 @@
 import { it, expect, describe, afterEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
-import { cleanup, getByText, render, screen, within } from "@testing-library/react";
+import { cleanup, getByText, render } from "@testing-library/react";
 
 import Scoreboard from "./Scoreboard";
 import { Match } from "./Scoreboard";
 
 describe("Greeting", () => {
-  
-
   afterEach(cleanup);
 
   it("should render title Scoreboard", () => {
@@ -71,6 +69,25 @@ describe("Greeting", () => {
 
   it("Finish match currently in progress. This removes a match from the scoreboard.", ()=>{
     const matches: Match[] = [];
+    const {queryByTestId} = render(<Scoreboard matches={matches} />);
+
+    expect(queryByTestId('score')).toBeFalsy();
+  });
+
+  it("Finishes match currently in progress by marking it as finished. This removes a match from the scoreboard.", ()=>{
+    const matches = [
+      {
+        homeTeam: {
+          name: "Mexico",
+          score: 1
+        },
+        awayTeam: {
+          name: "Canada",
+          score: 3
+        },
+        isFinished: true
+      }
+    ];
     const {queryByTestId} = render(<Scoreboard matches={matches} />);
 
     expect(queryByTestId('score')).toBeFalsy();
