@@ -39,7 +39,7 @@ function sortMatches(matches:Match[]):Match[] {
 
 let id = 0;
 
-export default function scoresReducer(state:Match[], action:ScoreboardActions):Match[] {
+export default function scoreboard(state:Match[], action:ScoreboardActions):Match[] {
     switch (action.type) {
       case 'add_new_match': {
         const matches:Match[] = [
