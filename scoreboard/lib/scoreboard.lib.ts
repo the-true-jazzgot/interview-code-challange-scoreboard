@@ -58,6 +58,8 @@ export default function scoreboard(state:Match[], action:ScoreboardActions):Matc
         return sortMatches(matches);
       }
       case 'update_score': {
+        if((action.payload.homeTeam.score ?? 0) < 0 || (action.payload.awayTeam.score ?? 0) < 0) throw Error("Scores cannot have negative values");
+        if(!Number.isInteger(action.payload.homeTeam.score) || !Number.isInteger(action.payload.awayTeam.score)) throw Error("Scores have to be whole number values");
         const matches:Match[] = state.map(match => {
             if((match.awayTeam.name == action.payload.awayTeam.name) && (match.homeTeam.name == action.payload.homeTeam.name)) {
                 return {
