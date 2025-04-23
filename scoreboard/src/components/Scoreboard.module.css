@@ -1,0 +1,22 @@
+.section {
+    /* for testing */
+    max-width: 400px;
+    width: 100%;
+}
+
+h3 {
+    text-align: center;
+}
+
+div {
+    display: flex;
+}
+
+div span {
+    padding: 5px 10px;
+    flex:1;
+}
+
+div span:first-child {
+    text-align: right;
+}

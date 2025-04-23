@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState } from "react";
+import styles from './Scoreboard.module.css';
 
 export interface Match {
     homeTeam: {
@@ -35,12 +36,15 @@ export default function Scoreboard({matches, title = "Scoreboard"}:ScoreboardPro
         return returnValue.map(item => item.match);
     }
 
-    return <section>
+    return <section className={styles.section}>
         <h3>{title}</h3>
         {scores.map(match => 
-            !match.isFinished && <div key={`${match.homeTeam.name}-${match.awayTeam.name}`} data-testid="score">
-                <span>{`${match.homeTeam.name} ${match.homeTeam.score?.toString() ?? "0"}`}</span>
-                <span>{`${match.awayTeam.name} ${match.awayTeam.score?.toString() ?? "0"}`}</span>
+            !match.isFinished && 
+            <div 
+                key={`${match.homeTeam.name}-${match.awayTeam.name}`} 
+                data-testid="score">
+                    <span>{`${match.homeTeam.name} ${match.homeTeam.score?.toString() ?? "0"}`}</span>
+                    <span>{`${match.awayTeam.name} ${match.awayTeam.score?.toString() ?? "0"}`}</span>
             </div>
         )}
     </section>
