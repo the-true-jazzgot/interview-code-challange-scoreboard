@@ -8,7 +8,7 @@ import { Match } from "./Scoreboard";
 describe("Greeting", () => {
   afterEach(cleanup);
 
-  it("should render title Scoreboard", () => {
+  it("should render title Test Scoreboard", () => {
     const matches: Match[] = [
       {
         homeTeam: {
@@ -22,9 +22,9 @@ describe("Greeting", () => {
       }
     ];
   
-    const {getByText} = render(<Scoreboard matches={matches} />);
+    const {getByText} = render(<Scoreboard title="Test Scoreboard" matches={matches} />);
 
-    const heading = getByText("Scoreboard");
+    const heading = getByText("Test Scoreboard");
     expect(heading).toBeInTheDocument();
   });
 

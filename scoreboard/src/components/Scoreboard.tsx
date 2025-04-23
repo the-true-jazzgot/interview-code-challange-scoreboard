@@ -13,10 +13,11 @@ export interface Match {
 }
 
 export interface ScoreboardProps {
-    matches: Match[]
+    matches: Match[],
+    title?:string
 }
 
-export default function Scoreboard({matches}:ScoreboardProps) {
+export default function Scoreboard({matches, title = "Scoreboard"}:ScoreboardProps) {
     const [scores, ] = useState<Match[]>(compareMatches(matches));
 
     function compareMatches(matches:Match[]):Match[] {
@@ -35,7 +36,7 @@ export default function Scoreboard({matches}:ScoreboardProps) {
     }
 
     return <section>
-        <h3>Scoreboard</h3>
+        <h3>{title}</h3>
         {scores.map(match => 
             !match.isFinished && <div key={`${match.homeTeam.name}-${match.awayTeam.name}`} data-testid="score">
                 <span>{`${match.homeTeam.name} ${match.homeTeam.score?.toString() ?? "0"}`}</span>
